@@ -6,6 +6,10 @@
 
 import serial
 import datetime
+import weather
+import time
+from sys import argv
+
 ser = serial.Serial('/dev/cu.usbmodemfa131', 9600)
 
 now = datetime.datetime.now()
@@ -18,19 +22,21 @@ def get_date_string():
 
     return current_day
 
+conf = argv[1]
+conf_data = weather.read_conf(conf)
 
 while True:
     current_date = get_date_string()
     filename = current_date + '.temperature.log'
+    ser.flush()
     with open(filename, 'a') as log:
         try:
-            temp = ser.readline()
-            #temp = 76
+            inside_temp = ser.readline().strip()
+            wunder_isotime, outside_temp = weather.get_weather(conf_data)
             now = datetime.datetime.now()
             iso = now.isoformat()
-            data = "{0} {1}".format(iso, temp)
+            data = "{0} {1} {2}".format(iso, inside_temp, outside_temp)
             print data.strip()
             log.write(data)
-            #print now, temp
         except:
             pass
