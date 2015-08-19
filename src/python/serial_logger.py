@@ -35,8 +35,9 @@ while True:
             wunder_isotime, outside_temp = weather.get_weather(conf_data)
             now = datetime.datetime.now()
             iso = now.isoformat()
-            data = "{0} {1} {2}".format(iso, inside_temp, outside_temp)
+            data = "{0} {1} {2}\n".format(iso, inside_temp, outside_temp)
             print data.strip()
             log.write(data)
-        except:
-            pass
+        except (KeyboardInterrupt, SystemExit):
+            ser.close()
+            exit()
