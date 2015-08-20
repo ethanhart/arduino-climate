@@ -98,6 +98,6 @@ void loop() {
     digitalWrite(red, HIGH);
   }
   
-  delay(180000);
+  delay(1000);
   
 }
